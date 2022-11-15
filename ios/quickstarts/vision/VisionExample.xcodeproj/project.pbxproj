@@ -108,6 +108,7 @@
 		7202DC6520D0C1A300034C35 /* image_has_text.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = image_has_text.jpg; path = Resources/image_has_text.jpg; sourceTree = "<group>"; };
 		7202DC6620D0C1A300034C35 /* barcode_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = barcode_128.png; path = Resources/barcode_128.png; sourceTree = "<group>"; };
 		7202DC6720D0C1A300034C35 /* beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = beach.jpg; path = Resources/beach.jpg; sourceTree = "<group>"; };
+		761BB0812923BD5800597183 /* VisionExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisionExample.entitlements; sourceTree = "<group>"; };
 		996AB05FD29F73D1BBD56682 /* Pods_VisionExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VisionExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4F89297243BB4BE00B58767 /* bird.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; name = bird.tflite; path = Resources/bird.tflite; sourceTree = "<group>"; };
 		A4F89298243BB4BF00B58767 /* bird.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bird.jpg; path = Resources/bird.jpg; sourceTree = "<group>"; };
@@ -216,6 +217,7 @@
 		BB287B3720729CE90069707A /* VisionExample */ = {
 			isa = PBXGroup;
 			children = (
+				761BB0812923BD5800597183 /* VisionExample.entitlements */,
 				BB287B3820729CE90069707A /* AppDelegate.swift */,
 				10224B572087E43100A77316 /* ViewController.swift */,
 				10224B5B2087E49F00A77316 /* MLKitExtensions.swift */,
@@ -771,6 +773,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 195CC9B3BC847B9E254CD86B /* Pods-VisionExample.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = VisionExample/VisionExample.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 294SUK65C3;
@@ -794,6 +797,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F479E886A4B537C1E1F543CE /* Pods-VisionExample.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = VisionExample/VisionExample.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 294SUK65C3;
