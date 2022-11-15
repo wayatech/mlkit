@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B236696D4F0D93B55DF2ABA /* Pods_VisionExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 996AB05FD29F73D1BBD56682 /* Pods_VisionExample.framework */; };
 		1001E6F720CEE0DD00445CB3 /* UIUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1001E6F620CEE0DD00445CB3 /* UIUtilities.swift */; };
 		1001E6F920CF021E00445CB3 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1001E6F820CF021E00445CB3 /* CameraViewController.swift */; };
 		1001E6FD20CF0C8F00445CB3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1001E6FC20CF0C8F00445CB3 /* Assets.xcassets */; };
@@ -49,6 +48,8 @@
 		7202DC6A20D0C1A300034C35 /* image_has_text.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7202DC6520D0C1A300034C35 /* image_has_text.jpg */; };
 		7202DC6B20D0C1A300034C35 /* barcode_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7202DC6620D0C1A300034C35 /* barcode_128.png */; };
 		7202DC6C20D0C1A300034C35 /* beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7202DC6720D0C1A300034C35 /* beach.jpg */; };
+		761BB07E2923BA1400597183 /* Pods_VisionExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 996AB05FD29F73D1BBD56682 /* Pods_VisionExample.framework */; };
+		761BB07F2923BA1400597183 /* Pods_VisionExample.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 996AB05FD29F73D1BBD56682 /* Pods_VisionExample.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4F89299243BB4BF00B58767 /* bird.tflite in Resources */ = {isa = PBXBuildFile; fileRef = A4F89297243BB4BE00B58767 /* bird.tflite */; };
 		A4F8929A243BB4BF00B58767 /* bird.tflite in Resources */ = {isa = PBXBuildFile; fileRef = A4F89297243BB4BE00B58767 /* bird.tflite */; };
 		A4F8929B243BB4BF00B58767 /* bird.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A4F89298243BB4BF00B58767 /* bird.jpg */; };
@@ -57,6 +58,20 @@
 		BB287B3E20729CE90069707A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB287B3C20729CE90069707A /* Main.storyboard */; };
 		F49F412CB2F4B2633FDDFD5F /* Pods_VisionExampleObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166D023691C0BC55E00963CD /* Pods_VisionExampleObjC.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		761BB0802923BA1400597183 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				761BB07F2923BA1400597183 /* Pods_VisionExample.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1001E6F620CEE0DD00445CB3 /* UIUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtilities.swift; sourceTree = "<group>"; };
@@ -117,7 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B236696D4F0D93B55DF2ABA /* Pods_VisionExample.framework in Frameworks */,
+				761BB07E2923BA1400597183 /* Pods_VisionExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +277,7 @@
 				BB287B3320729CE90069707A /* Resources */,
 				99C629A0C45C7CEA3AC69930 /* [CP] Embed Pods Frameworks */,
 				7BDDF3D9DFD65EC1C58EA79A /* [CP] Copy Pods Resources */,
+				761BB0802923BA1400597183 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -279,7 +295,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1410;
 				ORGANIZATIONNAME = "Google Inc.";
 				TargetAttributes = {
 					10E114DF20E5CBAA0013E4A4 = {
@@ -661,6 +677,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -686,7 +703,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -721,6 +738,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -740,7 +758,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -758,6 +776,9 @@
 				DEVELOPMENT_TEAM = 294SUK65C3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/VisionExample/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = eMotion;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.waya-tech.medic.emotion";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -778,6 +799,9 @@
 				DEVELOPMENT_TEAM = 294SUK65C3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/VisionExample/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = eMotion;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.waya-tech.medic.emotion";
 				PRODUCT_NAME = "$(TARGET_NAME)";
