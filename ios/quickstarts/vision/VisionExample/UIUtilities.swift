@@ -289,7 +289,29 @@ public class UIUtilities {
       return nil
     }
   }
-
+  public static func createPoseAngleMesurementOverlayView(
+    forPose pose: Pose, UIView overlayView: UIView
+  ) -> UIView {
+     
+      let kneeAngle: Float = UIUtilities.angle(
+        fromPoint:  pose.landmark(ofType: PoseLandmarkType.rightHip).position,
+        mesuredPoint: pose.landmark(ofType: PoseLandmarkType.rightKnee).position,
+        toPoint: pose.landmark(ofType: PoseLandmarkType.rightAnkle).position) * 180 / .pi
+      
+      let normalizedRect = CGRect(
+        x: 200,
+        y: 200,
+        width: 200,
+        height:50
+      )
+      let label = UILabel(frame: normalizedRect)
+      label.text = String(format: "Angle: %.2f", kneeAngle)
+      label.adjustsFontSizeToFitWidth = true
+     
+      overlayView.addSubview(label)
+      return overlayView
+  }
+    
   /// Creates a pose overlay view for visualizing a given `pose`.
   ///
   /// - Parameters:
@@ -306,6 +328,7 @@ public class UIUtilities {
     positionTransformationClosure: (VisionPoint) -> CGPoint
   ) -> UIView {
     let overlayView = UIView(frame: bounds)
+      UIUtilities.poseConnections()
 
     let lowerBodyHeight: CGFloat =
       UIUtilities.distance(
@@ -358,7 +381,8 @@ public class UIUtilities {
         radius: dotRadius
       )
     }
-    return overlayView
+    return UIUtilities.createPoseAngleMesurementOverlayView(forPose: pose, UIView: overlayView)
+    //return overlayView
   }
 
   /// Adds a gradient-colored line segment subview in a given `view`.
@@ -459,6 +483,23 @@ public class UIUtilities {
     let zDiff = fromPoint.z - toPoint.z
     return CGFloat(sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff))
   }
+    
+    /// Returns the angle between two 3D points.
+    ///
+    /// - Parameters:
+    ///   - fromPoint: The starting point.
+    ///   - endPoint: The end point.
+    /// - Returns: The distance.
+    private static func angle(fromPoint: Vision3DPoint,mesuredPoint: Vision3DPoint, toPoint: Vision3DPoint) -> Float {
+        
+        var vector1 = SIMD3(Float(fromPoint.x - mesuredPoint.x), Float(fromPoint.y - mesuredPoint.y), Float(fromPoint.z - mesuredPoint.z))
+        var vector2 = SIMD3(Float(toPoint.x - mesuredPoint.x), Float(toPoint.y - mesuredPoint.y), Float(toPoint.z - mesuredPoint.z))
+        var dotProduct = dot(vector1, vector2)
+        var theta = acos(dotProduct / (length(vector1) * length(vector2)))
+        
+    
+        return theta
+    }
 
   // MARK: - Private
 
