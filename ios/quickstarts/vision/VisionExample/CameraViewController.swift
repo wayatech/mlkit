@@ -43,8 +43,14 @@ class CameraViewController: UIViewController {
     .poseAccurate,
     .segmentationSelfie,
   ]
-
-  private var currentDetector: Detector = .onDeviceFace
+  private let articulation: [Articulation] = [
+    .onRightKnee,
+    .onLeftKnee,
+    .onRightElbow,
+    .onLeftElbow
+  ]
+  private var currentDetector: Detector = .poseAccurate
+  private var currentArticulation: Articulation = .onRightKnee
   private var isUsingFrontCamera = true
   private var previewLayer: AVCaptureVideoPreviewLayer!
   private lazy var captureSession = AVCaptureSession()
@@ -56,6 +62,7 @@ class CameraViewController: UIViewController {
     precondition(isViewLoaded)
     let previewOverlayView = UIImageView(frame: .zero)
     previewOverlayView.contentMode = UIView.ContentMode.scaleAspectFill
+      previewOverlayView.contentMode = UIView.ContentMode.scaleAspectFit
     previewOverlayView.translatesAutoresizingMaskIntoConstraints = false
     return previewOverlayView
   }()
@@ -117,6 +124,10 @@ class CameraViewController: UIViewController {
   @IBAction func selectDetector(_ sender: Any) {
     presentDetectorsAlertController()
   }
+    
+@IBAction func selectArticulation(_ sender: Any) {
+    presentArticulationAlertController()
+}
 
   @IBAction func switchCamera(_ sender: Any) {
     isUsingFrontCamera = !isUsingFrontCamera
@@ -267,7 +278,8 @@ class CameraViewController: UIViewController {
             positionTransformationClosure: { (position) -> CGPoint in
               return strongSelf.normalizedPoint(
                 fromVisionPoint: position, width: width, height: height)
-            }
+            },
+            Articulation: currentArticulation
           )
           strongSelf.annotationOverlayView.addSubview(poseOverlayView)
         }
@@ -552,7 +564,8 @@ class CameraViewController: UIViewController {
       strongSelf.captureSession.beginConfiguration()
       // When performing latency tests to determine ideal capture settings,
       // run the app in 'release' mode to get accurate performance metrics
-      strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.medium
+      //strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.medium
+      strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.high
 
       let output = AVCaptureVideoDataOutput()
       output.videoSettings = [
@@ -626,6 +639,7 @@ class CameraViewController: UIViewController {
 
   private func setUpPreviewOverlayView() {
     cameraView.addSubview(previewOverlayView)
+      previewOverlayView.scalesLargeContentImage = true
     NSLayoutConstraint.activate([
       previewOverlayView.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
       previewOverlayView.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
@@ -633,6 +647,7 @@ class CameraViewController: UIViewController {
       previewOverlayView.trailingAnchor.constraint(equalTo: cameraView.trailingAnchor),
 
     ])
+      
   }
 
   private func setUpAnnotationOverlayView() {
@@ -682,6 +697,32 @@ class CameraViewController: UIViewController {
     alertController.addAction(UIAlertAction(title: Constant.cancelActionTitleText, style: .cancel))
     present(alertController, animated: true)
   }
+    
+    private func presentArticulationAlertController() {
+      let alertController = UIAlertController(
+        title: Constant.alertControllerTitle,
+        message: Constant.alertControllerMessage,
+        preferredStyle: .alert
+      )
+      weak var weakSelf = self
+      articulation.forEach { articulationType in
+        let action = UIAlertAction(title: articulationType.rawValue, style: .default) {
+          [unowned self] (action) in
+          guard let value = action.title else { return }
+          guard let articulation = Articulation(rawValue: value) else { return }
+          guard let strongSelf = weakSelf else {
+            print("Self is nil!")
+            return
+          }
+          strongSelf.currentArticulation = articulation
+          strongSelf.removeDetectionAnnotations()
+        }
+        if articulationType.rawValue == self.currentDetector.rawValue { action.isEnabled = false }
+        alertController.addAction(action)
+      }
+      alertController.addAction(UIAlertAction(title: Constant.cancelActionTitleText, style: .cancel))
+      present(alertController, animated: true)
+    }
 
   private func removeDetectionAnnotations() {
     for annotationView in annotationOverlayView.subviews {
@@ -1048,6 +1089,12 @@ extension CameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 }
 
 // MARK: - Constants
+public enum Articulation: String {
+    case onRightKnee = "Right Knee"
+    case onLeftKnee = "Left Knee"
+    case onRightElbow = "Right Elbow"
+    case onLeftElbow = "Left Elbow"
+}
 
 public enum Detector: String {
   case onDeviceBarcode = "Barcode Scanning"

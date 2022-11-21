@@ -828,7 +828,8 @@ extension ViewController {
             dotRadius: Constants.smallDotRadius,
             positionTransformationClosure: { (position) -> CGPoint in
               return self.pointFrom(position).applying(transform)
-            }
+            },
+            Articulation: nil
           )
           self.annotationOverlayView.addSubview(poseOverlayView)
           self.resultsText = "Pose Detected"

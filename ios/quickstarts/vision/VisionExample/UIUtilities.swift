@@ -289,26 +289,69 @@ public class UIUtilities {
       return nil
     }
   }
+    
+    public static func getLandmarkForArticulation( forPose pose: Pose, Articulation articulation: Articulation?)->[PoseLandmark]{
+        
+        switch articulation{
+        case.onRightKnee:
+            var ret:[PoseLandmark] = [
+                pose.landmark(ofType: PoseLandmarkType.rightHip),
+                pose.landmark(ofType: PoseLandmarkType.rightKnee),
+                pose.landmark(ofType: PoseLandmarkType.rightAnkle)
+            ]
+            return ret
+        case.onLeftKnee:
+            var ret:[PoseLandmark] = [
+                pose.landmark(ofType: PoseLandmarkType.leftHip),
+                pose.landmark(ofType: PoseLandmarkType.leftKnee),
+                pose.landmark(ofType: PoseLandmarkType.leftAnkle)
+            ]
+            return ret
+        case.onRightElbow:
+            var ret:[PoseLandmark] = [
+                pose.landmark(ofType: PoseLandmarkType.rightShoulder),
+                pose.landmark(ofType: PoseLandmarkType.rightElbow),
+                pose.landmark(ofType: PoseLandmarkType.rightWrist)
+            ]
+            return ret
+        case.onLeftElbow:
+            var ret:[PoseLandmark] = [
+                pose.landmark(ofType: PoseLandmarkType.leftShoulder),
+                pose.landmark(ofType: PoseLandmarkType.leftElbow),
+                pose.landmark(ofType: PoseLandmarkType.leftWrist)
+            ]
+            return ret
+            
+        default:
+            var ret:[PoseLandmark] = []
+            return ret
+            
+        }
+    }
   public static func createPoseAngleMesurementOverlayView(
-    forPose pose: Pose, UIView overlayView: UIView
+    forPose pose: Pose, UIView overlayView: UIView,Articulation articulation: Articulation?
   ) -> UIView {
      
-      let kneeAngle: Float = UIUtilities.angle(
-        fromPoint:  pose.landmark(ofType: PoseLandmarkType.rightHip).position,
-        mesuredPoint: pose.landmark(ofType: PoseLandmarkType.rightKnee).position,
-        toPoint: pose.landmark(ofType: PoseLandmarkType.rightAnkle).position) * 180 / .pi
-      
-      let normalizedRect = CGRect(
-        x: 200,
-        y: 200,
-        width: 200,
-        height:50
-      )
-      let label = UILabel(frame: normalizedRect)
-      label.text = String(format: "Angle: %.2f", kneeAngle)
-      label.adjustsFontSizeToFitWidth = true
-     
-      overlayView.addSubview(label)
+      var toMesure:[PoseLandmark] = getLandmarkForArticulation(forPose: pose, Articulation: articulation)
+      if(toMesure.count==3) {
+          let kneeAngle: Float = UIUtilities.angle(
+            fromPoint:  toMesure[0].position,
+            mesuredPoint: toMesure[1].position,
+            toPoint: toMesure[2].position) * 180 / .pi
+          let accuracy: Float = toMesure[0].inFrameLikelihood *  toMesure[1].inFrameLikelihood *  toMesure[2].inFrameLikelihood
+          
+          let normalizedRect = CGRect(
+            x: 200,
+            y: 200,
+            width: 200,
+            height:50
+          )
+          let label = UILabel(frame: normalizedRect)
+          label.text = String(format: "Angle: %.2f v: %.2f%%", kneeAngle,accuracy)
+          label.adjustsFontSizeToFitWidth = true
+          
+          overlayView.addSubview(label)
+      }
       return overlayView
   }
     
@@ -325,8 +368,10 @@ public class UIUtilities {
   /// - Returns: The pose overlay view.
   public static func createPoseOverlayView(
     forPose pose: Pose, inViewWithBounds bounds: CGRect, lineWidth: CGFloat, dotRadius: CGFloat,
-    positionTransformationClosure: (VisionPoint) -> CGPoint
+    positionTransformationClosure: (VisionPoint) -> CGPoint,
+    Articulation articulation: Articulation?
   ) -> UIView {
+      let art = getLandmarkForArticulation(forPose: pose, Articulation: articulation)
     let overlayView = UIView(frame: bounds)
       UIUtilities.poseConnections()
 
@@ -351,8 +396,16 @@ public class UIUtilities {
 
     for (startLandmarkType, endLandmarkTypesArray) in UIUtilities.poseConnections() {
       let startLandmark = pose.landmark(ofType: startLandmarkType)
+        var lineMore: CGFloat=0;
       for endLandmarkType in endLandmarkTypesArray {
         let endLandmark = pose.landmark(ofType: endLandmarkType)
+          if(art.count==3){
+              if(startLandmark.type == art[0].type || startLandmark.type == art[1].type || startLandmark.type == art[2].type){
+                  if(endLandmark.type == art[0].type || endLandmark.type == art[1].type || endLandmark.type == art[2].type){
+                      lineMore=5
+                  }
+              }
+          }
         let startLandmarkPoint = positionTransformationClosure(startLandmark.position)
         let endLandmarkPoint = positionTransformationClosure(endLandmark.position)
 
@@ -369,19 +422,30 @@ public class UIUtilities {
           toPoint: endLandmarkPoint,
           inView: overlayView,
           colors: [startColor, endColor],
-          width: lineWidth)
+          width: lineWidth+lineMore)
       }
     }
+      
+      
     for landmark in pose.landmarks {
+        var radiusMore:CGFloat=0;
+        if(art.count==3){
+            if( landmark.type == art[1].type ){
+         
+                radiusMore=5
+                
+            }
+        }
+       
       let landmarkPoint = positionTransformationClosure(landmark.position)
       UIUtilities.addCircle(
         atPoint: landmarkPoint,
         to: overlayView,
         color: UIColor.blue,
-        radius: dotRadius
+        radius: dotRadius+radiusMore
       )
     }
-    return UIUtilities.createPoseAngleMesurementOverlayView(forPose: pose, UIView: overlayView)
+    return UIUtilities.createPoseAngleMesurementOverlayView(forPose: pose, UIView: overlayView, Articulation: articulation)
     //return overlayView
   }
 
